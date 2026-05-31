@@ -3,7 +3,6 @@ import VueRouter from 'vue-router'
 import UserIndex from "../views/UserIndex";
 import UserIntroduction from "../views/UserIntroduction";
 import UserReservation from "../views/UserReservation";
-import UserSubscribe from "../views/UserSubscribe";
 import UserDuty from "../views/UserDuty";
 import UserLog from "../views/UserLog";
 import UserNotices from "../views/UserNotices";
