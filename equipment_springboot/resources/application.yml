@@ -1,28 +1,21 @@
-# 服务端口配置
-server:
-  port: 8080
-  servlet:
-    context-path: /api
-
-# 数据库配置（读取Railway环境变量，内网连接）
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
-    type: com.zaxxer.hikari.HikariDataSource
+    # railway用环境变量读取mysql，自动读取项目绑定的mysql参数
+    url: jdbc:mysql://${MYSQLHOST}:${MYSQLPORT}/${MYSQLDATABASE}?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&useSSL=true
+    username: ${MYSQLUSER}
+    password: ${MYSQLPASSWORD}
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 
-# Mybatis-Plus全套配置
 mybatis-plus:
+  mapper-locations: classpath:/com/southwind/mapper/xml/*.xml
   configuration:
-    # 下划线自动转实体驼峰
-    map-underscore-to-camel-case: true
-    # 控制台打印SQL语句
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-  global-config:
-    db-config:
-      # 主键自增
-      id-type: auto
-  # mapper.xml文件扫描路径
-  mapper-locations: classpath:mapper/**/*.xml
+
+server:
+  # railway强制使用平台分配端口${PORT}，本地运行默认8181
+  port: ${PORT:8181}
+  servlet:
+    context-path: /api
