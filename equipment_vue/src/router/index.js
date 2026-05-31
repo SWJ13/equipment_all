@@ -14,7 +14,7 @@ import NoticesManage from "../views/NoticesManage";
 import LogManage from "../views/LogManage";
 import ReportsManage from "../views/ReportsManage";
 import Login from "../views/Login";
-
+// 为了触发Vercel重新部署，配置后端接口地址
 Vue.use(VueRouter)
 
 const routes = [
