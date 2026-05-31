@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <!-- 阻止 Google Fonts 请求 -->
+    <script>
+      (function() {
+        // 拦截所有对 Google Fonts 的请求
+        const originalFetch = window.fetch;
+        window.fetch = function(...args) {
+          const url = args[0];
+          if (typeof url === 'string' && (url.includes('fonts.googleapis.com') || url.includes('fonts.gstatic.com') || url.includes('/css2'))) {
+            return Promise.reject(new Error('Blocked Google Fonts request'));
+          }
+          return originalFetch.apply(this, args);
+        };
+        
+        // 拦截动态创建的 link 标签
+        const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+              if (node.nodeName === 'LINK' && node.href) {
+                if (node.href.includes('fonts.googleapis.com') || node.href.includes('fonts.gstatic.com') || node.href.includes('/css2')) {
+                  node.remove();
+                }
+              }
+            });
+          });
+        });
+        observer.observe(document.head, { childList: true, subtree: true });
+        
+        // 阻止现有的 link 标签加载 Google Fonts
+        document.addEventListener('DOMContentLoaded', function() {
+          const links = document.querySelectorAll('link[href*="fonts.googleapis.com"], link[href*="fonts.gstatic.com"], link[href*="/css2"]');
+          links.forEach(function(link) {
+            link.remove();
+          });
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+</html>

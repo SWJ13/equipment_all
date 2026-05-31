@@ -1,0 +1,4 @@
+equipment_vue/node_modules/
+equipment_vue/dist/
+equipment_springboot/target/
+equipment_springboot/.idea/
